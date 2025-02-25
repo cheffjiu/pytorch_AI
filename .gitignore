@@ -1,3 +1,9 @@
+#自定义忽略文件
+data/
+logdir/
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

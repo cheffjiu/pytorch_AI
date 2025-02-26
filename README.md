@@ -41,6 +41,7 @@ pip install torch torchvision numpy matplotlib tensorboard
 
 ### 1️⃣ 准备数据集
 📂 本项目的数据集：图像数据集[Fashion-minist]
+
 📂将数据集放入 `data/` 目录下，或者在 `src/utils/` 目录中编写数据集处理工具。
 
 ### 2️⃣ 训练模型

@@ -7,7 +7,7 @@ class LeNet(nn.Module):
         self.features = nn.Sequential(
             nn.Conv2d(1, 6, kernel_size=5),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.AvgPool2d(kernel_size=2, stride=2),
             nn.Conv2d(6, 16, kernel_size=5),
             nn.ReLU(),
             nn.AvgPool2d(kernel_size=2, stride=2),

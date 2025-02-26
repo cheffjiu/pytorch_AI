@@ -42,8 +42,8 @@ class Trainer:
             self.logger.update(outputs, labels)
 
         avg_loss = total_loss / len(self.train_loader)
-        self.logger.compute_and_log(prefix="train")
-        return avg_loss
+        scaler_results = self.logger.compute_and_log(prefix="train")
+        return avg_loss, scaler_results
 
     def validate_epoch(self, epoch):
         self.model.eval()
@@ -58,5 +58,5 @@ class Trainer:
                 self.logger.update(outputs, labels)
 
         avg_loss = total_loss / len(self.val_loader)
-        self.logger.compute_and_log(prefix="val")
-        return avg_loss
+        scaler_metrics = self.logger.compute_and_log(prefix="val")
+        return avg_loss, scaler_metrics

@@ -8,7 +8,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 # 导入自定义模块
-from src.net.softmax_regression import SoftMaxRegression
+from src.net.mlp import MLP
 from src.utils.get_loader import GetLoader
 from src.utils.metrics_visualizer import MetricsVisualizer
 from src.utils.trainer import Trainer
@@ -17,10 +17,11 @@ from src.utils.trainer import Trainer
 def train_model(
     model_class,
     input_dim,
+    hidden_dim,
     output_dim,
     batch_size=64,
     num_epochs=20,
-    log_dir="../logdir",
+    log_dir="../../logdir/mlp",
     device="cuda" if torch.cuda.is_available() else "cpu",
 ):
     # 数据加载
@@ -28,11 +29,12 @@ def train_model(
         batch_size=batch_size,
         shape_size=28,
         num_workers=4,
-        root="data",
+        root="../data",
     )
 
     # 模型初始化
-    model = model_class(input_dim, output_dim)
+    model = model_class(input_dim, hidden_dim, output_dim)
+    model.to(device)
 
     # 定义损失函数和优化器
     loss_fn = nn.CrossEntropyLoss()
@@ -83,15 +85,17 @@ def train_model(
 if __name__ == "__main__":
     # 参数设置
     input_dim = 28 * 28
+    hidden_dim = [128, 64, 32]
     output_dim = 10
-    num_epochs = 10  # 减少 epoch 数，以便快速测试
+    num_epochs = 20  # 减少 epoch 数，以便快速测试
 
     # 训练模型
     train_model(
-        SoftMaxRegression,
+        MLP,
         input_dim,
+        hidden_dim,
         output_dim,
         batch_size=64,
         num_epochs=num_epochs,
-        log_dir="logdir/softmaxreg",
+        log_dir="logdir/mlp",
     )

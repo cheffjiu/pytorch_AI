@@ -87,6 +87,14 @@ class MetricsVisualizer:
         )
         plt.close()
 
+    def log_computational_graph(self, model, input_tensor):
+        """
+        记录模型计算图
+        :param model: 要可视化的模型
+        :param input_tensor: 示例输入张量
+        """
+        self.writer.add_graph(model, input_tensor)
+
     def close(self):
         """关闭 TensorBoard writer"""
         self.writer.close()

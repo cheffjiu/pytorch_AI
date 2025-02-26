@@ -8,7 +8,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 # 导入自定义模块
-from src.net.softmax_regression import SoftMaxRegression
+from src.net.lenet import LeNet
 from src.utils.get_loader import GetLoader
 from src.utils.metrics_visualizer import MetricsVisualizer
 from src.utils.trainer import Trainer
@@ -16,23 +16,23 @@ from src.utils.trainer import Trainer
 
 def train_model(
     model_class,
-    input_dim,
     output_dim,
     batch_size=64,
     num_epochs=20,
-    log_dir="../logdir",
+    log_dir="../../logdir/mlp",
     device="cuda" if torch.cuda.is_available() else "cpu",
 ):
     # 数据加载
     train_loader, val_loader = GetLoader.get_loader_fashionmnist(
         batch_size=batch_size,
-        shape_size=28,
+        shape_size=32,
         num_workers=4,
-        root="data",
+        root="../data",
     )
 
     # 模型初始化
-    model = model_class(input_dim, output_dim)
+    model = model_class(output_dim)
+    model.to(device)
 
     # 定义损失函数和优化器
     loss_fn = nn.CrossEntropyLoss()
@@ -40,7 +40,7 @@ def train_model(
     scheduler = ReduceLROnPlateau(optimizer, patience=5)
 
     # 创建计算图示例输入
-    example_input = torch.rand((batch_size, input_dim)).to(device)
+    example_input = torch.rand((batch_size, 1, 32, 32)).to(device)
     # 初始化日志记录器
     num_classes = output_dim
     logger = MetricsVisualizer(num_classes, log_dir)
@@ -82,16 +82,15 @@ def train_model(
 
 if __name__ == "__main__":
     # 参数设置
-    input_dim = 28 * 28
+
     output_dim = 10
-    num_epochs = 10  # 减少 epoch 数，以便快速测试
+    num_epochs = 20  # 减少 epoch 数，以便快速测试
 
     # 训练模型
     train_model(
-        SoftMaxRegression,
-        input_dim,
+        LeNet,
         output_dim,
         batch_size=64,
         num_epochs=num_epochs,
-        log_dir="logdir/softmaxreg",
+        log_dir="logdir/lenet",
     )

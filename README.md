@@ -15,9 +15,11 @@ project/
 ├── data/           # 数据集存放位置
 ├── logdir/         # TensorBoard 日志文件存放位置
 ```
-
+已经实现的网络模块：
+- SoftmaxRegression
+- MLP
+- LeNet
 ---
-
 ## 🛠 环境依赖
 请确保你的环境安装了以下依赖：
 
@@ -38,7 +40,8 @@ pip install torch torchvision numpy matplotlib tensorboard
 ## 🚀 使用方法
 
 ### 1️⃣ 准备数据集
-📂 将数据集放入 `data/` 目录下，或者在 `src/utils/` 目录中编写数据集处理工具。
+📂 本项目的数据集：图像数据集[Fashion-minist]
+📂将数据集放入 `data/` 目录下，或者在 `src/utils/` 目录中编写数据集处理工具。
 
 ### 2️⃣ 训练模型
 💡 执行训练脚本：

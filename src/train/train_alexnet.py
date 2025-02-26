@@ -43,7 +43,7 @@ def train_model(
     example_input = torch.rand((batch_size, 1, 227, 227)).to(device)
     # 初始化日志记录器
     num_classes = output_dim
-    logger = MetricsVisualizer(num_classes, log_dir)
+    logger = MetricsVisualizer(num_classes, log_dir,device)
     # 记录计算图
     logger.log_computational_graph(model, example_input)
 

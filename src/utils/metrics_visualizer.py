@@ -12,35 +12,36 @@ from torch.utils.tensorboard import SummaryWriter
 
 
 class MetricsVisualizer:
-    def __init__(self, num_classes, log_dir="../logdir"):
+    def __init__(self, num_classes, log_dir="../logdir",device='cpu'):
         """
         初始化指标可视化工具
         :param num_classes: 分类任务的类别数
         :param log_dir: TensorBoard 日志保存路径
         """
         self.num_classes = num_classes
+        self.device=device
         self.writer = SummaryWriter(log_dir=log_dir)
 
         # 定义指标集合
         self.metrics = MetricCollection(
             {
-                "accuracy": Accuracy(task="multiclass", num_classes=num_classes),
+                "accuracy": Accuracy(task="multiclass", num_classes=num_classes).to(device),
                 "precision": Precision(
                     task="multiclass", num_classes=num_classes, average="macro"
-                ),
+                ).to(device),
                 "recall": Recall(
                     task="multiclass", num_classes=num_classes, average="macro"
-                ),
+                ).to(device),
                 "f1_score": F1Score(
                     task="multiclass", num_classes=num_classes, average="macro"
-                ),
+                ).to(device),
             }
         )
 
         # 定义混淆矩阵
         self.confusion_matrix = ConfusionMatrix(
             task="multiclass", num_classes=num_classes, normalize="true"
-        )
+        ).to(device)
 
         self.global_step = 0
 
@@ -50,6 +51,7 @@ class MetricsVisualizer:
         :param predictions: 模型预测的 logits 或概率分布 (Tensor)
         :param targets: 真实标签 (Tensor)
         """
+        targets=targets.to(self.device)
         self.metrics.update(predictions, targets)
         self.confusion_matrix.update(predictions, targets)
 
@@ -72,8 +74,10 @@ class MetricsVisualizer:
         return scalar_results
 
     def log_confusion_matrix(self, prefix="val"):
-        # 计算混淆矩阵
-        cm = self.confusion_matrix.compute().cpu().numpy()
+        # 计算混淆矩阵(GPU可用：在GPU上面计算)
+        cm = self.confusion_matrix.compute()
+        # 结果移回cpu
+        cm=cm.cpu().numpy()
         self.confusion_matrix.reset()
 
         # 可视化混淆矩阵

@@ -21,6 +21,7 @@ project/
 - LeNet
 - AlexNet
 - VGG
+- NiN
 ---
 ## 🛠 环境依赖
 请确保你的环境安装了以下依赖：

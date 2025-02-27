@@ -8,7 +8,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 # 导入自定义模块
-from src.net.alexnet import AlexNet
+from src.net.nin import NiN
 from src.utils.get_loader import GetLoader
 from src.utils.metrics_visualizer import MetricsVisualizer
 from src.utils.trainer import Trainer
@@ -92,9 +92,9 @@ if __name__ == "__main__":
 
     # 训练模型
     train_model(
-        AlexNet,
+        NiN,
         output_dim,
         batch_size=64,
         num_epochs=num_epochs,
-        log_dir="logdir/alexnet",
+        log_dir="logdir/nin",
     )

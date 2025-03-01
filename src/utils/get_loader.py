@@ -43,3 +43,29 @@ class GetLoader:
         )
 
         return train_loader, test_loader
+
+    def get_loader_cifar10(batch_size=64, shape_size=28, num_workers=4, root="data"):
+
+        transforms = v2.Compose(
+            [
+                v2.Resize((shape_size, shape_size)),
+                v2.ToTensor(),
+                v2.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            ]
+        )
+        train_dataset = torchvision.datasets.CIFAR10(
+            root=root, train=True, download=True, transform=transforms
+        )
+        test_dataset = torchvision.datasets.CIFAR10(
+            root=root, train=False, download=True, transform=transforms
+        )
+
+        train_loader = DataLoader(
+            train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+        )
+
+        test_loader = DataLoader(
+            test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers
+        )
+
+        return train_loader, test_loader

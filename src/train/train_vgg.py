@@ -25,7 +25,7 @@ def train_model(
         if torch.cuda.is_available()
         else "mps" if torch.backends.mps.is_built() else "cpu"
     ),
-):
+) -> None:
     # 数据加载
     train_loader, val_loader = GetLoader.get_loader_fashionmnist(
         batch_size=batch_size,

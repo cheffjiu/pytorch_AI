@@ -2,13 +2,12 @@ import torch
 import torch.nn as nn
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-
+from torchvision import models
 import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 # 导入自定义模块
-from src.net.nin import NiN
 from src.utils.get_loader import GetLoader
 from src.utils.metrics_visualizer import MetricsVisualizer
 from src.utils.trainer import Trainer
@@ -35,8 +34,15 @@ def train_model(
     )
 
     # 模型初始化
-    model = model_class(output_dim)
+    model = model_class(weights=models.AlexNet_Weights.DEFAULT)
     model.to(device)
+    # 修改模型以适应Fashion-MNIST数据集
+    model.features[0] = nn.Conv2d(1, 64, kernel_size=11, stride=4, padding=2).to(device)
+    num_ftrs = model.classifier[6].in_features
+    model.classifier[6] = nn.Linear(num_ftrs, output_dim).to(device)
+    # 冻结卷积层的参数
+    for param in model.features.parameters():
+        param.requires_grad = False
 
     # 定义损失函数和优化器
     loss_fn = nn.CrossEntropyLoss()
@@ -88,13 +94,13 @@ if __name__ == "__main__":
     # 参数设置
 
     output_dim = 10
-    num_epochs = 20  # 减少 epoch 数，以便快速测试
+    num_epochs = 10  # 减少 epoch 数，以便快速测试
 
     # 训练模型
     train_model(
-        NiN,
+        models.alexnet,
         output_dim,
         batch_size=64,
         num_epochs=num_epochs,
-        log_dir="logdir/nin",
+        log_dir="logdir/alexnet",
     )

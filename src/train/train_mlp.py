@@ -23,7 +23,7 @@ def train_model(
     num_epochs=20,
     log_dir="../../logdir/mlp",
     device="cuda" if torch.cuda.is_available() else "cpu",
-):
+) -> None:
     # 数据加载
     train_loader, val_loader = GetLoader.get_loader_fashionmnist(
         batch_size=batch_size,

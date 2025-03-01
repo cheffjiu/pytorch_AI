@@ -17,21 +17,22 @@ from src.utils.trainer import Trainer
 def train_model(
     model_class,
     output_dim,
-    batch_size=64,
-    num_epochs=20,
-    log_dir="../../logdir/googlenet",
+    batch_size,
+    num_epochs,
+    log_dir,
     device=(
         "cuda"
         if torch.cuda.is_available()
         else "mps" if torch.backends.mps.is_built() else "cpu"
     ),
 ) -> None:
+
     # 数据加载
-    train_loader, val_loader = GetLoader.get_loader_cifar10(
+    getLoader = GetLoader()
+    train_loader, val_loader = getLoader.get_loader_cifar10(
         batch_size=batch_size,
         shape_size=224,
         num_workers=4,
-        root="../data",
     )
 
     # 模型初始化
@@ -44,7 +45,7 @@ def train_model(
     scheduler = ReduceLROnPlateau(optimizer, patience=5)
 
     # 创建计算图示例输入
-    example_input = torch.rand((batch_size, 1, 224, 224)).to(device)
+    example_input = torch.rand((batch_size, 3, 224, 224)).to(device)
     # 初始化日志记录器
     num_classes = output_dim
     logger = MetricsVisualizer(num_classes, log_dir, device)
@@ -86,7 +87,8 @@ def train_model(
 
 if __name__ == "__main__":
     # 参数设置
-
+    project_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    log_dir = os.path.join(project_dir, "logdir/googlenet")
     output_dim = 10
     num_epochs = 20  # 减少 epoch 数，以便快速测试
 
@@ -96,5 +98,5 @@ if __name__ == "__main__":
         output_dim,
         batch_size=64,
         num_epochs=num_epochs,
-        log_dir="logdir/googlenet",
+        log_dir=log_dir,
     )

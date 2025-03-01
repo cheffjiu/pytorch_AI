@@ -73,7 +73,7 @@ class GoogLeNet(nn.Module):
         self.aux_logits = aux_logits
 
         # 初始卷积层
-        self.conv1 = BasicConv2d(1, 64, kernel_size=7, stride=2, padding=3)
+        self.conv1 = BasicConv2d(3, 64, kernel_size=7, stride=2, padding=3)
         self.maxpool1 = nn.MaxPool2d(3, stride=2, ceil_mode=True)
 
         # Inception模块堆叠

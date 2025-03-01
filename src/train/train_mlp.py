@@ -25,11 +25,11 @@ def train_model(
     device="cuda" if torch.cuda.is_available() else "cpu",
 ) -> None:
     # 数据加载
-    train_loader, val_loader = GetLoader.get_loader_fashionmnist(
+    getLoader = GetLoader()
+    train_loader, val_loader = getLoader.get_loader_fashionmnist(
         batch_size=batch_size,
         shape_size=28,
         num_workers=4,
-        root="../data",
     )
 
     # 模型初始化
@@ -84,10 +84,12 @@ def train_model(
 
 if __name__ == "__main__":
     # 参数设置
+    project_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    log_dir = os.path.join(project_dir, "logdir/mlp")
     input_dim = 28 * 28
     hidden_dim = [128, 64, 32]
     output_dim = 10
-    num_epochs = 20  # 减少 epoch 数，以便快速测试
+    num_epochs = 10  # 减少 epoch 数，以便快速测试
 
     # 训练模型
     train_model(
@@ -97,5 +99,5 @@ if __name__ == "__main__":
         output_dim,
         batch_size=64,
         num_epochs=num_epochs,
-        log_dir="logdir/mlp",
+        log_dir=log_dir,
     )

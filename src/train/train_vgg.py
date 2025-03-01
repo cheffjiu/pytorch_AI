@@ -27,11 +27,11 @@ def train_model(
     ),
 ) -> None:
     # 数据加载
-    train_loader, val_loader = GetLoader.get_loader_fashionmnist(
+    getLoader = GetLoader()
+    train_loader, val_loader = getLoader.get_loader_fashionmnist(
         batch_size=batch_size,
         shape_size=227,
         num_workers=4,
-        root="../data",
     )
 
     # 模型初始化
@@ -86,7 +86,8 @@ def train_model(
 
 if __name__ == "__main__":
     # 参数设置
-
+    project_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    log_dir = os.path.join(project_dir, "logdir/vgg")
     output_dim = 10
     num_epochs = 20  # 减少 epoch 数，以便快速测试
 
@@ -96,5 +97,5 @@ if __name__ == "__main__":
         output_dim,
         batch_size=64,
         num_epochs=num_epochs,
-        log_dir="logdir/vgg",
+        log_dir=log_dir,
     )

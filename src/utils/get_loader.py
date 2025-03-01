@@ -1,11 +1,22 @@
 import torchvision
 from torchvision.transforms import v2
 from torch.utils.data import DataLoader
+import os
 
 
 class GetLoader:
+    def __init__(self):
+        self.root = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data"
+        )
+        if not os.path.exists(self.root):
+            os.makedirs(self.root)
+
     def get_loader_fashionmnist(
-        batch_size=64, shape_size=28, num_workers=4, root="data"
+        self,
+        batch_size=64,
+        shape_size=28,
+        num_workers=4,
     ):
         """
             获取Fashion-MNIST数据集的DataLoader对象。
@@ -28,10 +39,10 @@ class GetLoader:
             ]
         )
         train_dataset = torchvision.datasets.FashionMNIST(
-            root=root, train=True, download=True, transform=transforms
+            root=self.root, train=True, download=True, transform=transforms
         )
         test_dataset = torchvision.datasets.FashionMNIST(
-            root=root, train=False, download=True, transform=transforms
+            root=self.root, train=False, download=True, transform=transforms
         )
 
         train_loader = DataLoader(
@@ -44,7 +55,12 @@ class GetLoader:
 
         return train_loader, test_loader
 
-    def get_loader_cifar10(batch_size=64, shape_size=28, num_workers=4, root="data"):
+    def get_loader_cifar10(
+        self,
+        batch_size=64,
+        shape_size=28,
+        num_workers=4,
+    ):
 
         transforms = v2.Compose(
             [
@@ -54,10 +70,10 @@ class GetLoader:
             ]
         )
         train_dataset = torchvision.datasets.CIFAR10(
-            root=root, train=True, download=True, transform=transforms
+            root=self.root, train=True, download=True, transform=transforms
         )
         test_dataset = torchvision.datasets.CIFAR10(
-            root=root, train=False, download=True, transform=transforms
+            root=self.root, train=False, download=True, transform=transforms
         )
 
         train_loader = DataLoader(

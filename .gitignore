@@ -1,7 +1,7 @@
 #自定义忽略文件
 data/
 logdir/
-
+.DS_Store
 
 
 # Byte-compiled / optimized / DLL files

@@ -23,6 +23,7 @@ project/
 - AlexNet
 - VGG
 - NiN
+- GoogleNet
 已经实现的模型微调训练：
 - 微调AlexNet
 ---
